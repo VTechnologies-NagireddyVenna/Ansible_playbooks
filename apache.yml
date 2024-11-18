@@ -1,5 +1,5 @@
 ---
-- hosts: qa
+- hosts: localhost
   tasks:
   - name: Install apache webserver
     ansible.builtin.dnf:
