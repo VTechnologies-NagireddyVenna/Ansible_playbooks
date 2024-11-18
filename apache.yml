@@ -1,0 +1,16 @@
+---
+- hosts: qa
+  tasks:
+  - name: Install apache webserver
+    ansible.builtin.dnf:
+      name: httpd
+      state: latest
+
+  - name: Start service httpd, if not started
+    ansible.builtin.service:
+      name: httpd
+      state: started
+  - name: Copy index.html page in webserver
+    ansible.builtin.copy:
+      src: /root/playbooks/index.html
+      dest: /var/www/html/
