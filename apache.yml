@@ -1,7 +1,7 @@
 ---
 - hosts: qa
   tasks:
-  - name: Install apache webserver
+  - name: Install httpd 
     ansible.builtin.dnf:
       name: httpd
       state: latest
@@ -10,7 +10,22 @@
     ansible.builtin.service:
       name: httpd
       state: started
+
   - name: Copy index.html page in webserver
     ansible.builtin.copy:
       src: /root/playbooks/index.html
       dest: /var/www/html/
+
+  - name: changing the port number
+    ansible.builtin.template:
+      src: /root/playbooks/httpd.conf.j2
+      dest: /etc/httpd/conf/httpd.conf
+    vars:
+      port: 90
+    notify:
+      - Restart Apache
+  handlers:
+  - name: Restart Apache
+    ansible.builtin.service:
+      name: httpd
+      state: restarted
